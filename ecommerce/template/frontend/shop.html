@@ -1,0 +1,87 @@
+{% extends 'frontend/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>Fresh and Organic</p>
+						<h1>Shop</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- products -->
+	<div class="product-section mt-150 mb-150">
+		<div class="container">
+
+			<div class="row">
+                <div class="col-md-12">
+                    <div class="product-filters">
+                        <ul>
+                            <li class="active" data-filter="*">All</li>
+							{% if category %}
+							{% for cat in category %}
+                            <li data-filter=".strawberry">{{cat.cat_name}}</li>
+							{% endfor%}
+							{% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+			<div class="row product-lists">
+				{% if product %}
+					{% for prod in product %}
+				<div class="col-lg-4 col-md-6 text-center strawberry">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="single-product.html"><img src="{{prod.image.url}}" alt=""></a>
+						</div>
+						<h3>{{prod.prod_name}}</h3>
+						<p class="product-price"><span>Per Kg</span> &#8358; {{prod.price}} </p>
+						<a href="{% url 'shopapp:product_detail' prod.slug %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				</div>
+					{% endfor %}
+					{% else %}
+					<p>No product yet</p>
+				{% endif %}
+				
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<div class="pagination-wrap">
+						<ul>
+							{% if product.has_previous %}
+							<li><a href="?page={{product.previous_page_number}}">Prev</a></li>
+							{% endif %}
+							{% for page in paginator.page_range %}
+							{% if page == product.number %}
+							<li><a class="active" href="?page={{page}}">{{page}} </a></li>
+							{% else %}
+							<li><a href="?page={{page}}">{{page}}</a></li>
+							{% endif %}
+							{% endfor %}
+							{% if product.has_next %}
+							<li><a href="?page={{product.next_page_number}}">Next</a></li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end products -->
+
+
+{% endblock %}
