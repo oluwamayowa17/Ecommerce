@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block title %}
+	Shop
+{% endblock %}
+
 {% block content %}
 
 	<!-- breadcrumb-section -->
@@ -44,7 +48,7 @@
 				<div class="col-lg-4 col-md-6 text-center strawberry">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="{{prod.image.url}}" alt=""></a>
+							<a href="{% url 'shopapp:product_detail' prod.slug %}"><img src="{{prod.image.url}}" alt=""></a>
 						</div>
 						<h3>{{prod.prod_name}}</h3>
 						<p class="product-price"><span>Per Kg</span> &#8358; {{prod.price}} </p>

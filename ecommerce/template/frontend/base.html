@@ -8,7 +8,11 @@
 	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
 
 	<!-- title -->
-	<title>Fruitkha</title>
+	<title>
+		{% block title %}
+			
+		{% endblock %}
+	</title>
 
 	<!-- favicon -->
 	<link rel="shortcut icon" type="image/png" href="{% static 'frontend/assets/img/favicon.png' %}">
@@ -60,13 +64,13 @@
 						<!-- menu start -->
 						<nav class="main-menu">
 							<ul>
-                            <li class="current-list-item"><a href="{% url 'index' %}">Home</a>
+                            <li {% if request.path == '/' %} class="current-list-item" {% endif %}><a href="{% url 'index' %}">Home</a>
 								</li>
-								<li><a href="{% url 'shopapp:about' %}">About</a></li>
-								<li><a href="{% url 'shopapp:news'%}">News</a>
+								<li {% if request.path == '/app/about/' %} class="current-list-item" {% endif %}><a href="{% url 'shopapp:about' %}">About</a></li>
+								<li {% if request.path == '/app/news/' %} class="current-list-item" {% endif %}><a href="{% url 'shopapp:news'%}">News</a>
 								</li>
-								<li><a href="{% url 'shopapp:contact' %}">Contact</a></li>
-								<li><a href="{% url 'shopapp:products' %}">Shop</a>
+								<li {% if request.path == '/app/contact/' %} class="current-list-item" {% endif %}><a href="{% url 'shopapp:contact' %}">Contact</a></li>
+								<li {% if request.path == '/app/products/' %} class="current-list-item" {% endif %}><a href="{% url 'shopapp:products' %}">Shop</a>
 								</li>
 								<li>
 									<div class="header-icons">
@@ -228,6 +232,8 @@
 	<script src="{% static 'frontend/assets/js/sticker.js' %}"></script>
 	<!-- main js -->
 	<script src="{% static 'frontend/assets/js/main.js' %}"></script>
+
+	<script src="{% static 'frontend/assets/js/countdown.js' %}" ></script>
 
 </body>
 </html>
