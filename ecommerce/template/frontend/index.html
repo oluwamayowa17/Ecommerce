@@ -26,7 +26,7 @@
 						<h1>Delicious Seasonal Fruits</h1>
 						<div class="hero-btns">
 							<a href="{% url 'shopapp:products' %}" class="boxed-btn">Fruit Collection</a>
-							<a href="contact.html" class="bordered-btn">Contact Us</a>
+							<a href="{% url 'shopapp:contact' %}" class="bordered-btn">Contact Us</a>
 						</div>
 					</div>
 				</div>
@@ -137,10 +137,11 @@
 <!-- end product section -->
 
 <!-- cart banner section -->
+{% if deal %}
+{% for deal in deal %}
 <section class="cart-banner pt-100 pb-100">
 	<div class="container">
-		{% if deal %}
-		{% for deal in deal %}
+		
 		<div class="row clearfix">
 			<!--Image Column-->
 			<div class="image-column col-lg-6">
@@ -188,10 +189,11 @@
 				<a href="{% url 'shopapp:hot_deal_details' deal.product.slug %}" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 			</div>
 		</div>
-		{% endfor %}
-		{% endif %}
+		
 	</div>
 </section>
+{% endfor %}
+{% endif %}
 <!-- end cart banner section -->
 
 <!-- testimonail-section -->
@@ -287,7 +289,7 @@
 	<div class="container">
 		<h3>December sale is on! <br> with big <span class="orange-text">Discount...</span></h3>
 		<div class="sale-percent"><span>Sale! <br> Upto</span>50% <span>off</span></div>
-		<a href="shop.html" class="cart-btn btn-lg">Shop Now</a>
+		<a href="{% url 'shopapp:hot_deal' %}" class="cart-btn btn-lg">Shop Now</a>
 	</div>
 </section>
 <!-- end shop banner -->

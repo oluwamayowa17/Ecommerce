@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from shopapp.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
+from django.contrib import messages
+
 
 from django.core import mail
 from django.template.loader import render_to_string
@@ -13,7 +15,7 @@ from django.conf import settings
 
 def index(request):
     products = Products.objects.all().order_by('-created')[:3]
-    deal = HotDeal.objects.all()
+    deal = HotDeal.objects.filter(display=True)
     for product in products:
             hot_deal = HotDeal.objects.filter(product=product).first()
             if hot_deal:
@@ -72,9 +74,29 @@ def product_detail(request, slug):
     }
     return render (request, 'frontend/single-product.html', context)
 
+def hot_deal(request):
+    hot_deals = HotDeal.objects.all()
+    page = request.GET.get('page')
+    num_of_items = 3
+    paginator = Paginator(hot_deals, num_of_items) 
+    try:
+        product = paginator.page(page) 
+    except PageNotAnInteger:
+        page = 1
+        product = paginator.page(page)  
+    except EmptyPage:
+        page = paginator.num_pages
+        product = paginator.page(page)
+    context = {
+        'hot_deals': hot_deals,
+        'paginator': paginator,
+    }
+    return render(request, 'frontend/discount.html', context)
+
 def hot_deal_details(request, product_slug):
     product = get_object_or_404(Products, slug=product_slug)
     hot_deal = get_object_or_404(HotDeal, product=product)
+    discounts = HotDeal.objects.all()
 
     discount_price = None
     if hot_deal:
@@ -82,6 +104,7 @@ def hot_deal_details(request, product_slug):
     context={
         'hot_deal':hot_deal,
         'discount_price':discount_price,
+        'discounts': discounts,
     }
     return render(request, 'frontend/hotdeal.html', context)
 
@@ -135,6 +158,8 @@ def contact(request):
         if send:
             data.save()
             mail.send_mail(subject, plain_message, from_email, [ 'ogungburemayowa2019@gmail.com'], html_message=html_message)
-            print(name, email, phone, message)
+            messages.success(request, 'Message sent!!')
+        else:
+            messages.error(request, 'Could not send email')
     context = {}
     return render(request, 'frontend/contact.html', context)

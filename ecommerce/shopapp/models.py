@@ -74,13 +74,19 @@ class Contact(models.Model):
 class HotDeal(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)
     discount = models.PositiveIntegerField()
-    deal_end = models.DateTimeField()
+    deal_end = models.DateTimeField(blank=True, null=True)
+    display = models.BooleanField(default=False, verbose_name='Special Discount') 
     
 
 
     def __str__(self):
         return self.product.prod_name
 
-   
+class Subscriber(models.Model):
+    email = models.EmailField()
+    timestamp = models.DateTimeField(auto_now_add=True) 
+
+    def __str__(self):
+        return self.email  
 
 

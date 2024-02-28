@@ -40,7 +40,7 @@
 						<p>
 							<strong>Categories: </strong>
 							{% for category in prod.category.all %}
-							{{ category.cat_name }}
+							{{ category.cat_name }},
 							{% empty %}
 							<li>No categories found for this product.</li>
 							{% endfor %}
@@ -78,12 +78,13 @@
 				{% for related_product in related_products %}
 			<div class="col-lg-4 col-md-6 text-center">
 				<div class="single-product-item">
+					
 					<div class="product-image">
-						<a href="single-product.html"><img src="{{related_product.image.url}}" alt=""></a>
+						<a href="{% url 'shopapp:product_detail' related_product.slug %}"><img src="{{related_product.image.url}}" alt=""></a>
 					</div>
 					<h3>{{related_product.prod_name}}</h3>
 					<p class="product-price"><span>Per Kg</span> {{related_product.price}}$ </p>
-					<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					<a href="{% url 'shopapp:product_detail' related_product.slug %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 				</div>
 			</div>
 				{% endfor %}

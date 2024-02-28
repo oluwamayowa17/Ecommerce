@@ -15,5 +15,7 @@ admin.site.register(Category)
 admin.site.register(News)
 admin.site.register(Contact)
 admin.site.register(HotDeal)
+admin.site.register(Subscriber)
+
 
 
