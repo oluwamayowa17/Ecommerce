@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
-
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 	<!-- title -->
 	<title>
 		{% block title %}
@@ -74,7 +74,18 @@
 								</li>
 								<li>
 									<div class="header-icons">
-										<a class="shopping-cart" href="{% url 'shopapp:cart' %}"><i class="fas fa-shopping-cart"></i></a>
+										
+										<a class="shopping-cart" href="{% url 'cart:cart_summary' %}">
+											<div id="cart-qty" class="d-inline-flex">
+												{% with totalqty=cart|length%}
+												{% if totalqty > 0 %}
+													{{totalqty}}
+												{% else %}
+													0
+												{% endif %}
+												{% endwith %}
+											</div>
+											<i class="fas fa-shopping-cart"></i></a>
 										<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 									</div>
 								</li>

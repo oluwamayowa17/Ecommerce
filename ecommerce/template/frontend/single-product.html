@@ -34,9 +34,15 @@
 					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta sint dignissimos, rem commodi cum voluptatem quae reprehenderit repudiandae ea tempora incidunt ipsa, quisquam animi perferendis eos eum modi! Tempora, earum.</p>
 					<div class="single-product-form">
 						<form action="index.html">
-							<input type="number" placeholder="0">
+							<select id="select" style="border: 1px solid #ddd; border-radius: 5px; width: 100px; padding: 10px; margin-bottom: 15px">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select>
 						</form>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<a href="#" id="add-button" data-productid="{{prod.id}}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 						<p>
 							<strong>Categories: </strong>
 							{% for category in prod.category.all %}
@@ -113,5 +119,27 @@
 	</div>
 </div>
 <!-- end more products -->
+
+
+<script>
+	$(document).on('click', '#add-button', function(e){
+		e.preventDefault();
+		$.ajax({
+			type: 'POST',
+			url : '{% url "cart:cart_add" %}',
+			data: {
+				productid : $('#add-button').data('productid'),
+				productqty: $('#select option:selected').text(),
+				csrfmiddlewaretoken: "{{csrf_token}}",
+				action: 'post',
+			},
+			success: function(json){
+				document.getElementById('cart-qty').innerHTML = json.qty
+			},
+			error: function(xhr, errmsg, err){}
+		});
+	})
+
+</script>
 
 {% endblock %}

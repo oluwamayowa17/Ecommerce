@@ -37,30 +37,30 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="{% static 'frontend/assets/img/products/product-img-1.jpg' %}" alt=""></td>
-									<td class="product-name">Strawberry</td>
-									<td class="product-price">$85</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
+								{% for item in cart %}
+								{% with product=item.product%}
+								<tr class="product-item table-body-row" data-productid="{{product.id}}">
+									<td class="product-remove"><a id="delete-button" data-productid="{{product.id}}" href=""><i class="far fa-window-close delete-button"></i></a></td>
+									<td class="product-image"><img src="{{product.image.url}}" alt=""></td>
+									<td class="product-name">{{product.prod_name}}</td>
+									<td class="product-price">${{product.price}}</td>
+									<td class="product-quantity">
+										<select id="select{{product.id}}" style="border: 1px solid #ddd; border-radius: 5px; width: 100px; padding: 10px; margin-bottom: 15px">
+											<option selected style="display: none;">{{item.qty}}</option>
+											<option value="">1</option>
+											<option value="">2</option>
+											<option value="">3</option>
+											<option value="">4</option>
+											<option value="">5</option>
+										</select>
+									</td>
+									<td class="product-total">${{item.total_price}}</td>
+									<td>							
+										<a href="cart.html" id="update-button" data-productid="{{product.id}}" class="boxed-btn update-button">Update</a>
+									</td>
 								</tr>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="{% static 'frontend/assets/img/products/product-img-2.jpg' %}" alt=""></td>
-									<td class="product-name">Berry</td>
-									<td class="product-price">$70</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="{% static 'frontend/assets/img/products/product-img-3.jpg' %}" alt=""></td>
-									<td class="product-name">Lemon</td>
-									<td class="product-price">$35</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
+								{% endwith %}
+								{% endfor %}
 							</tbody>
 						</table>
 					</div>
@@ -78,7 +78,7 @@
 							<tbody>
 								<tr class="total-data">
 									<td><strong>Subtotal: </strong></td>
-									<td>$500</td>
+									<td id="sub-total">${{cart.get_total_price}}</td>
 								</tr>
 								<tr class="total-data">
 									<td><strong>Shipping: </strong></td>
@@ -86,12 +86,12 @@
 								</tr>
 								<tr class="total-data">
 									<td><strong>Total: </strong></td>
-									<td>$545</td>
+									<td>${{cart.final_price}}</td>
 								</tr>
 							</tbody>
 						</table>
 						<div class="cart-buttons">
-							<a href="cart.html" class="boxed-btn">Update Cart</a>
+							<!-- <a href="cart.html" id="update-button" data-productid="{{product.id}}" class="boxed-btn update-button">Update Cart</a> -->
 							<a href="checkout.html" class="boxed-btn black">Check Out</a>
 						</div>
 					</div>
@@ -110,4 +110,47 @@
 		</div>
 	</div>
 	<!-- end cart -->
+
+	<script>
+		$(document).on('click', '.delete-button', function(e){
+			e.preventDefault();
+			var prod_id = $('#delete-button').data('productid');
+			$.ajax({
+				type: 'POST',
+				url : '{% url "cart:cart_delete" %}',
+				data: {
+					productid : $('#delete-button').data('productid'),
+					csrfmiddlewaretoken: "{{csrf_token}}",
+					action: 'post',
+				},
+				success: function(json){
+					$('.product-item[data-productid="'+ prod_id +'"]').remove();
+					$('#cart-qty').text(json.qty);
+					$('#sub-total').text('$' + json.subtotal);
+				},
+				error: function(xhr, errmsg, err){}
+			});
+		})
+		
+		$(document).on('click', '.update-button', function(e){
+			e.preventDefault();
+			var prod_id = $(this).data('productid');
+			$.ajax({
+				type: 'POST',
+				url : '{% url "cart:cart_update" %}',
+				data: {
+					productid : $(this).data('productid'),
+					productqty: $('#select' + prod_id + ' option:selected').text(),
+					csrfmiddlewaretoken: "{{csrf_token}}",
+					action: 'post',
+				},
+				success: function(json){
+					$('.product-item[data-productid="'+ prod_id +'"] .product-total').text('$' + json.total_price);
+					document.getElementById('cart-qty').innerHTML = json.qty
+					document.getElementById('sub-total').innerHTML = json.subtotal
+				},
+				error: function(xhr, errmsg, err){}
+			});
+		})
+	</script>
 {% endblock %}
