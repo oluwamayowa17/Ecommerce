@@ -86,7 +86,7 @@
 								</tr>
 								<tr class="total-data">
 									<td><strong>Total: </strong></td>
-									<td>${{cart.final_price}}</td>
+									<td id="final-total">${{cart.final_price}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -127,6 +127,7 @@
 					$('.product-item[data-productid="'+ prod_id +'"]').remove();
 					$('#cart-qty').text(json.qty);
 					$('#sub-total').text('$' + json.subtotal);
+					$('#final-total').text('$' + json.final_total);
 				},
 				error: function(xhr, errmsg, err){}
 			});
@@ -148,6 +149,7 @@
 					$('.product-item[data-productid="'+ prod_id +'"] .product-total').text('$' + json.total_price);
 					document.getElementById('cart-qty').innerHTML = json.qty
 					document.getElementById('sub-total').innerHTML = json.subtotal
+					document.getElementById('final-total').innerHTML = json.final_total
 				},
 				error: function(xhr, errmsg, err){}
 			});

@@ -1,5 +1,4 @@
 const eventBox = document.querySelector('#event-box')
-console.log(eventBox.textContent)
 
 const countdownDays = document.getElementById('countdown-box')
 const countdownHour = document.getElementById('countdown-box1')
@@ -7,7 +6,6 @@ const countdownMins = document.getElementById('countdown-box2')
 const countdownSecs = document.getElementById('countdown-box3')
 
 const eventDate = Date.parse(eventBox.textContent)
-console.log(eventDate)
 
 setInterval(()=>{
     const now = new Date().getTime()

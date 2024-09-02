@@ -14,6 +14,5 @@ urlpatterns = [
     path('discounts/', views.hot_deal, name='hot_deal'),
     path('hotdeal/details/<slug:product_slug>', views.hot_deal_details, name='hot_deal_details'),
     path('news/details/', views.news_details, name='news_details'),
-    path('cart/', views.cart, name='cart'),
 
 ]

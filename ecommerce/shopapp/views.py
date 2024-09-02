@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from shopapp.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView
 from django.contrib import messages
 
 
-from django.core import mail
+from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
@@ -41,7 +40,7 @@ def products(request):
     product = Products.objects.all().order_by('-created')
     category = Category.objects.all()
     page = request.GET.get('page')
-    num_of_items = 3
+    num_of_items = 10
     paginator = Paginator(product, num_of_items) 
     try:
         product = paginator.page(page) 
@@ -65,7 +64,7 @@ def product_detail(request, slug):
     related_products = []
 
     for category in categories:
-        category_products = category.products.exclude(slug=slug)  # Exclude the current product
+        category_products = category.products.exclude(slug=slug)  
         related_products.extend(category_products)
 
     context={
@@ -108,9 +107,6 @@ def hot_deal_details(request, product_slug):
     }
     return render(request, 'frontend/hotdeal.html', context)
 
-def cart(request):
-    context = {}
-    return render(request, 'frontend/cart.html', context)
 
 def news(request):
     news = News.objects.all()
@@ -148,18 +144,19 @@ def contact(request):
                 'name':name,
                 'email':email,
                 'phone':phone,
-                'subject':subject,
                 'message':message
         }
         html_message = render_to_string('frontend/mail-template.html', email_data)
         plain_message = strip_tags(html_message)
-        from_email = settings.EMAIL_HOST_USER
-        send = mail.send_mail(mail_subject, plain_message, from_email, ['ogungburemayowa2019@gmail.com'], html_message=html_message)
-        if send:
+        from_email = email
+        recepient = settings.EMAIL_HOST_USER
+        try:
             data.save()
-            mail.send_mail(subject, plain_message, from_email, [ 'ogungburemayowa2019@gmail.com'], html_message=html_message)
+            email_message = EmailMessage(mail_subject, plain_message, to=recepient, from_email=from_email)
+            email_message.send()
             messages.success(request, 'Message sent!!')
-        else:
+        except:
             messages.error(request, 'Could not send email')
-    context = {}
-    return render(request, 'frontend/contact.html', context)
+    return render(request, 'frontend/contact.html')
+
+

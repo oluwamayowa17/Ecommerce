@@ -10,7 +10,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(UserProfile)
+# admin.site.register(UserProfile)
 admin.site.register(Category) 
 admin.site.register(News)
 admin.site.register(Contact)

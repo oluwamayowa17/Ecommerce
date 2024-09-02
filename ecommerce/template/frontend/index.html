@@ -22,10 +22,10 @@
 			<div class="col-lg-9 offset-lg-2 text-center">
 				<div class="hero-text">
 					<div class="hero-text-tablecell">
-						<p class="subtitle">Fresh & Organic</p>
-						<h1>Delicious Seasonal Fruits</h1>
+						<p class="subtitle">You deserve</p>
+						<h1>Delicious Meals</h1>
 						<div class="hero-btns">
-							<a href="{% url 'shopapp:products' %}" class="boxed-btn">Fruit Collection</a>
+							<a href="{% url 'shopapp:products' %}" class="boxed-btn">Our Collection</a>
 							<a href="{% url 'shopapp:contact' %}" class="bordered-btn">Contact Us</a>
 						</div>
 					</div>
@@ -99,12 +99,12 @@
 			<div class="col-lg-4 col-md-6 text-center">
 				<div class="single-product-item">
 					<div class="product-image">
-						<a href="{% url 'shopapp:product_detail' prod.slug %}"><img src="{{prod.image}}" alt=""></a>
+						<a href="{% url 'shopapp:product_detail' prod.slug %}"><img class="img-fluid" style="height: 200px; " src="{{prod.image}}" alt=""></a>
 					</div>
 					<h3>{{prod.prod_name}}</h3>
-					<p class="product-price"><span>Per Kg</span> &#8358; {{prod.price}} </p>
+					<p class="product-price"><span>Per plate</span> &#8358; {{prod.price}} </p>
 					<a href="{% url 'shopapp:product_detail' prod.slug %}" class="cart-btn"><i
-							class="fas fa-shopping-cart"></i> Add to Cart</a>
+							class="fas fa-shopping-cart"></i> View Details</a>
 				</div>
 			</div>
 			{% endfor %}
@@ -197,7 +197,7 @@
 <!-- end cart banner section -->
 
 <!-- testimonail-section -->
-<div class="testimonail-section mt-150 mb-150">
+<!-- <div class="testimonail-section mt-150 mb-150">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-10 offset-lg-1 text-center">
@@ -254,11 +254,11 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 <!-- end testimonail-section -->
 
 <!-- advertisement section -->
-<div class="abt-section mb-150">
+<!-- <div class="abt-section mb-150">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-6 col-md-12">
@@ -281,7 +281,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 <!-- end advertisement section -->
 
 <!-- shop banner -->
@@ -295,6 +295,7 @@
 <!-- end shop banner -->
 
 <!-- latest news -->
+{% if news %}
 <div class="latest-news pt-150 pb-150">
 	<div class="container">
 
@@ -309,7 +310,7 @@
 		</div>
 
 		<div class="row">
-			{% if news %}
+
 			{% for new in news %}
 			<div class="col-lg-4 col-md-6">
 				<div class="single-latest-news">
@@ -329,8 +330,7 @@
 				</div>
 			</div>
 			{% endfor %}
-			{% endif%}
-			<!-- <div class="col-lg-4 col-md-6">
+		<!-- <div class="col-lg-4 col-md-6">
 					<div class="single-latest-news">
 						<a href="single-news.html"><div class="latest-news-bg news-bg-2"></div></a>
 						<div class="news-text-box">
@@ -366,6 +366,7 @@
 		</div>
 	</div>
 </div>
+{% endif%}	
 <!-- end latest news -->
 
 

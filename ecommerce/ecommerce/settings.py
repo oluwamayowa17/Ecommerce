@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shopapp',
     'cart',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,7 @@ STATICFILES_DIRS = [STATIC_DIR,]
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'account.UserBase'
+LOGIN_REDIRECT_URL = '/account/dashboard'
+LOGIN_URL = '/acount/login'

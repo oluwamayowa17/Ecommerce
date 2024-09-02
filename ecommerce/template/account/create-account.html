@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create account - Windmill Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'account/assets/css/tailwind.output.css' %}">
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+  <script src="{% static 'account/assets/js/init-alpine.js' %}"></script>
+  <style>
+    /* Custom styles for form elements */
+    .form-label {
+      font-size: 1rem;
+      color: #4B5563;
+    }
+
+    /* Style input fields */
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 0.875rem;
+      border: 1px solid #D1D5DB;
+      border-radius: 0.25rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #805AD5;
+    }
+
+    .form-checkbox {
+      margin-right: 0.5rem;
+    }
+
+    .form-checkbox-label {
+      font-size: 0.875rem;
+      color: #6B7280;
+    }
+
+    .submit-button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #ffffff;
+      background-color: #6B46C1;
+      border: none;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-button:hover {
+      background-color: #805AD5;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 0.875rem;
+      border: 1px solid #D1D5DB;
+      border-radius: 0.25rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #805AD5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
+    <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+      <div class="flex flex-col overflow-y-auto md:flex-row">
+        <div class="h-32 md:h-auto md:w-1/2">
+          <img aria-hidden="true" class="object-cover w-full h-full dark:hidden"
+            src="{% static 'account/assets/img/c&c.jpg' %}" alt="Office">
+          <img aria-hidden="true" class="hidden object-cover w-full h-full dark:block"
+            src="{% static 'account/assets/img/create-account-office-dark.jpeg' %}" alt="Office">
+        </div>
+        <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+          <div class="w-full">
+            <h1 class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">Create account</h1>
+            <form method="post" action="#">
+              {% csrf_token %}
+              {% if forms.errors %}
+              <p>Plese correct the following errors: </p>
+              {% for field in form %}
+              {% if field.errors %}
+              <div class="alert alert-primary" role="alert">
+                {{ field.label }}: {{ field.errors|striptags }}
+              </div>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
+              {% if messages %}
+              {% for message in messages %}
+              <div class="alert alert-info t-25" style="font-size: 12px;">{{message}}</div>
+              {% endfor %}
+              {% endif %}
+              <label class="block form-label">
+                <!-- <span class="text-gray-700 dark:text-gray-400">{{ form.user_name.label }}</span> -->
+                {{ form.user_name }}
+              </label>
+              <label class="block mt-4 form-label">
+                <!-- <span class="text-gray-700 dark:text-gray-400">{{ form.email.label }}</span> -->
+                {{ form.email }}
+              </label>
+              <label class="block mt-4 form-label">
+                <!-- <span class="text-gray-700 dark:text-gray-400">{{ form.password1.label }}</span> -->
+                <!-- <small class="form-text text-muted small mb-4"> At least 8 characters and 1 digit</small> -->
+                {{ form.password1 }}
+              </label>
+              <label class="block mt-4 form-label">
+                <!-- <span class="text-gray-700 dark:text-gray-400">{{ form.password2.label }}</span> -->
+                {{ form.password2 }}
+              </label>
+
+              <div class="flex mt-6 text-sm">
+                <label class="flex items-center form-checkbox-label">
+                  <input type="checkbox" class="form-checkbox">
+                  <span class="ml-2">I agree to the <span class="underline">privacy policy</span></span>
+                </label>
+              </div>
+              <hr class="my-6">
+              <button class="submit-button" type="submit" style="background-color: yellow; color: red;">Create
+                account</button>
+            </form>
+            <p class="mt-4">
+              <a class="text-sm font-medium text-red-600 dark:text-red-400 hover:underline" href="{% url 'account:user_login' %}"
+                style="color: red;">Already have an account? Login</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

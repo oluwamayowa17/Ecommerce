@@ -31,10 +31,10 @@
                 <div class="col-md-12">
                     <div class="product-filters">
                         <ul>
-                            <li class="active" data-filter="*">All</li>
+                            <li class="active prod-list" data-filter="All">All</li>
 							{% if category %}
 							{% for cat in category %}
-                            <li data-filter=".strawberry">{{cat.cat_name}}</li>
+                            <li class="prod-list" data-filter="{{cat.cat_name}}">{{cat.cat_name}}</li>
 							{% endfor%}
 							{% endif %}
                         </ul>
@@ -42,17 +42,17 @@
                 </div>
             </div>
 
-			<div class="row product-lists">
+			<div class="row ">
 				{% if product %}
 					{% for prod in product %}
-				<div class="col-lg-4 col-md-6 text-center strawberry">
+				<div class="items col-lg-4 col-md-6 text-center" data-item="{% for category in prod.category.all %} {{ category.cat_name }} {% endfor %}">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="{% url 'shopapp:product_detail' prod.slug %}"><img src="{{prod.image.url}}" alt=""></a>
+						<a href="{% url 'shopapp:product_detail' prod.slug %}"><img class="img-fluid" style="height: 200px; " src="{{prod.image.url}}" alt=""></a>
 						</div>
 						<h3>{{prod.prod_name}}</h3>
 						<p class="product-price"><span>Per Kg</span> &#8358; {{prod.price}} </p>
-						<a href="{% url 'shopapp:product_detail' prod.slug %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<a href="{% url 'shopapp:product_detail' prod.slug %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> View Details</a>
 					</div>
 				</div>
 					{% endfor %}
@@ -87,5 +87,22 @@
 	</div>
 	<!-- end products -->
 
+	<script>
+		const lists = document.querySelectorAll(".prod-list")
+		lists.forEach((list)=>{list.addEventListener("click", function(e){
+			let filterList = list.dataset.filter
+			const products = document.querySelectorAll(".items")
+			products.forEach((product)=>{
+				let filterProduct = product.dataset.item
+
+				if(filterProduct.includes(filterList) || filterProduct === "All"){
+					product.style.display = "block"
+				}else{
+					product.style.display = "none"
+					
+				}
+			})
+		})})
+	</script>
 
 {% endblock %}
