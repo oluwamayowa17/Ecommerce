@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .cart import Cart
 from shopapp.models import Products
 from django.http import JsonResponse
+from payment.forms import CheckoutForm
 
 def cart_summary(request):
     cart = Cart(request)
@@ -53,4 +54,18 @@ def cart_update(request):
         return response
 
 def checkout(request):
-    return render(request, 'frontend/checkout.html')
+    cart = Cart(request)
+    if request.method == 'POST':
+        checkout_form = CheckoutForm(request.POST)
+        if checkout_form.is_valid():
+            checkout_instance= checkout_form.save(commit=False)
+            checkout_instance.user = request.user
+            checkout_instance.save()
+            return redirect('cart:checkout')
+    else:
+        checkout_form = CheckoutForm()
+    context = {
+        'cart': cart,
+        'checkout_form': checkout_form,
+    }
+    return render(request, 'frontend/checkout.html', context)

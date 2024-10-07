@@ -80,5 +80,12 @@ class Cart():
     def save(self):
         self.session.modified = True
 
+    def clear(self):
+        '''
+        Clear session data
+        '''
+        del self.session['skey']
+        self.session.modified = True
+
 
 

@@ -41,33 +41,21 @@
 						<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 						  <div class="card-body">
 							<div class="billing-address-form">
-								<form action="index.html">
-									<p><input type="text" placeholder="Name"></p>
-									<p><input type="email" placeholder="Email"></p>
-									<p><input type="text" placeholder="Address"></p>
-									<p><input type="tel" placeholder="Phone"></p>
-									<p><textarea name="bill" id="bill" cols="30" rows="10" placeholder="Say Something"></textarea></p>
+								<form action="" method="post" onsubmit="payWithPaystack()">
+									{% csrf_token %}
+									<p>{{checkout_form.phone_number}}</p>
+									<p>{{checkout_form.post_code}}</p>
+									<p>{{checkout_form.country}}</p>
+									<p>{{checkout_form.state}}</p>
+									<p>{{checkout_form.address}}</p>
+									<p>{{checkout_form.request}}</p>
+									<input type="submit" href="#" class="boxed-btn" value="Place Order"/>
 								</form>
 							</div>
 						  </div>
 						</div>
 					  </div>
-					  <div class="card single-accordion">
-						<div class="card-header" id="headingTwo">
-						  <h5 class="mb-0">
-							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-							  Shipping Address
-							</button>
-						  </h5>
-						</div>
-						<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-						  <div class="card-body">
-							<div class="shipping-address-form">
-								<p>Your shipping address form is here.</p>
-							</div>
-						  </div>
-						</div>
-					  </div>
+					  
 					  <div class="card single-accordion">
 						<div class="card-header" id="headingThree">
 						  <h5 class="mb-0">
@@ -103,35 +91,28 @@
 								<td>Product</td>
 								<td>Total</td>
 							</tr>
+							{% for item in cart %}
 							<tr>
-								<td>Strawberry</td>
-								<td>$85.00</td>
+								<td>{{item.product}}</td>
+								<td>&#8358;{{item.total_price}}</td>
 							</tr>
-							<tr>
-								<td>Berry</td>
-								<td>$70.00</td>
-							</tr>
-							<tr>
-								<td>Lemon</td>
-								<td>$35.00</td>
-							</tr>
+							{% endfor %}
 						</tbody>
 						<tbody class="checkout-details">
 							<tr>
-								<td>Subtotal</td>
-								<td>$190</td>
+								<td><strong>Subtotal</strong> </td>
+								<td>&#8358;{{cart.get_total_price}}</td>
 							</tr>
 							<tr>
-								<td>Shipping</td>
-								<td>$50</td>
+								<td><strong>Shipping</strong></td>
+								<td>&#8358;45</td>
 							</tr>
 							<tr>
-								<td>Total</td>
-								<td>$240</td>
+								<td><strong>Total</strong></td>
+								<td>&#8358;{{cart.final_price}}</td>
 							</tr>
 						</tbody>
 					</table>
-					<a href="#" class="boxed-btn">Place Order</a>
 				</div>
 			</div>
 		</div>
@@ -139,32 +120,33 @@
 </div>
 <!-- end check out section -->
 
-<!-- logo carousel -->
-<div class="logo-carousel-section">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="logo-carousel-inner">
-					<div class="single-logo-item">
-						<img src="assets/img/company-logos/1.png" alt="">
-					</div>
-					<div class="single-logo-item">
-						<img src="assets/img/company-logos/2.png" alt="">
-					</div>
-					<div class="single-logo-item">
-						<img src="assets/img/company-logos/3.png" alt="">
-					</div>
-					<div class="single-logo-item">
-						<img src="assets/img/company-logos/4.png" alt="">
-					</div>
-					<div class="single-logo-item">
-						<img src="assets/img/company-logos/5.png" alt="">
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- end logo carousel -->
+
+
+<script>
+	function payWithPaystack() {
+		let currency = "NGN";
+		let plan = "";
+		let ref = "";
+		let amount = "";
+		let obj = {
+			key: "",
+			email: "",
+			amount: "",
+			ref: ref,
+			callback: function (response) {
+				window.location.href = "";
+			},
+		};
+		if (Boolean(currency)) {
+			obj.currency = currency.toUpperCase();
+		}
+		if (Boolean(plan)) {
+			obj.plan - plan;
+		}
+
+		var handler = PaystackPop.setup(obj);
+		handler.openIframe();
+	}
+</script>
 
 {% endblock content%}

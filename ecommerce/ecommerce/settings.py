@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'shopapp',
     'cart',
     'account',
+    'payment'
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'account.UserBase'
 LOGIN_REDIRECT_URL = '/account/dashboard'
 LOGIN_URL = '/acount/login'
+
+
+PAYSTACK_SECRET_KEY = "sk_test_933607118b07df17b5fc73de03a734e25cd8af80"
+PAYSTACK_PUBLIC_KEY = "pk_test_f02e6a07d6be9f30a51d64cd555ce4d945190e64"

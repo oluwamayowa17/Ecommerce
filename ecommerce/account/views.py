@@ -12,6 +12,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.html import strip_tags
 from django.conf import settings
 from .token import account_activation_token
+from django.contrib.auth import login, logout, authenticate
 
 def activate(request, uidb64, token):
     try:
@@ -71,5 +72,13 @@ def account_register(request):
 
 
 def user_login(request):
-
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('cart:checkout')
+        else:
+            messages.error(request, 'Invalid credentials')
     return render(request, 'account/login.html')

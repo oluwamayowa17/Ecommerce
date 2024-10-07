@@ -28,6 +28,9 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         self.cat_name = self.cat_name.capitalize()
         return super().save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name_plural = 'Categories'
 
 class Products(models.Model):
     prod_name = models.CharField(verbose_name = 'Product Name', max_length = 100)
@@ -46,6 +49,9 @@ class Products(models.Model):
         self.prod_name = self.prod_name.capitalize()
         self.slug = slugify(self.prod_name)
         return super().save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name_plural = 'Products'
 
 class News(models.Model):
     title = models.CharField(verbose_name = 'Post Title', max_length = 100)

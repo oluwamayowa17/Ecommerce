@@ -30,28 +30,12 @@ class CustomAccountManager(BaseUserManager):
         user.save()
         return user
 
-
-
-
-
-
-
-
-
-
-
 class UserBase(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(_('email_address'), unique=True)
     user_name = models.CharField(max_length=150, unique=True)
     full_name = models.CharField(max_length=150, blank=True)
     about = models.TextField(_('about'), max_length=500, blank=True)
-
-    # Delivery details
-    phone_number = models.CharField(max_length=15, blank=True)
-    post_code = models.CharField(max_length=15, blank=True)
-    address_line1 = models.CharField(max_length=15, blank=True)
-    address_line2 = models.CharField(max_length=15, blank=True)
 
     #user status
     is_active = models.BooleanField(default=False)

@@ -43,7 +43,7 @@
 									<td class="product-remove"><a id="delete-button" data-productid="{{product.id}}" href=""><i class="far fa-window-close delete-button"></i></a></td>
 									<td class="product-image"><img src="{{product.image.url}}" alt=""></td>
 									<td class="product-name">{{product.prod_name}}</td>
-									<td class="product-price">${{product.price}}</td>
+									<td class="product-price">&#8358;{{product.price}}</td>
 									<td class="product-quantity">
 										<select id="select{{product.id}}" style="border: 1px solid #ddd; border-radius: 5px; width: 100px; padding: 10px; margin-bottom: 15px">
 											<option selected style="display: none;">{{item.qty}}</option>
@@ -54,7 +54,7 @@
 											<option value="">5</option>
 										</select>
 									</td>
-									<td class="product-total">${{item.total_price}}</td>
+									<td class="product-total">&#8358;{{item.total_price}}</td>
 									<td>							
 										<a href="cart.html" id="update-button" data-productid="{{product.id}}" class="boxed-btn update-button">Update</a>
 									</td>
@@ -78,21 +78,25 @@
 							<tbody>
 								<tr class="total-data">
 									<td><strong>Subtotal: </strong></td>
-									<td id="sub-total">${{cart.get_total_price}}</td>
+									<td id="sub-total">&#8358;{{cart.get_total_price}}</td>
 								</tr>
 								<tr class="total-data">
 									<td><strong>Shipping: </strong></td>
-									<td>$45</td>
+									<td>&#8358;45</td>
 								</tr>
 								<tr class="total-data">
 									<td><strong>Total: </strong></td>
-									<td id="final-total">${{cart.final_price}}</td>
+									<td id="final-total">&#8358;{{cart.final_price}}</td>
 								</tr>
 							</tbody>
 						</table>
 						<div class="cart-buttons">
 							<!-- <a href="cart.html" id="update-button" data-productid="{{product.id}}" class="boxed-btn update-button">Update Cart</a> -->
-							<a href="checkout.html" class="boxed-btn black">Check Out</a>
+							{% if not user.is_authenticated %}
+							<a href="{% url 'account:account_register' %}" class="boxed-btn black">Check Out</a>
+							{% else %}
+							<a href="{% url 'cart:checkout' %}" class="boxed-btn black">Check Out</a>
+							{% endif %}
 						</div>
 					</div>
 
