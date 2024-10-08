@@ -3,6 +3,8 @@ from .cart import Cart
 from shopapp.models import Products
 from django.http import JsonResponse
 from payment.forms import CheckoutForm
+from django.conf import settings
+from payment.models import Payment
 
 def cart_summary(request):
     cart = Cart(request)
@@ -55,17 +57,31 @@ def cart_update(request):
 
 def checkout(request):
     cart = Cart(request)
+    payment = None  
+    ref = None
     if request.method == 'POST':
         checkout_form = CheckoutForm(request.POST)
         if checkout_form.is_valid():
-            checkout_instance= checkout_form.save(commit=False)
+            payment = Payment.objects.create(user=request.user, amount=cart.final_price())
+            ref = payment.ref 
+            checkout_instance = checkout_form.save(commit=False)
             checkout_instance.user = request.user
             checkout_instance.save()
-            return redirect('cart:checkout')
+
+            return render(request, 'frontend/checkout.html', {
+                'cart': cart,
+                'checkout_form': checkout_form,
+                'payment': payment,
+                'ref': ref,  
+                'field_values': request.POST,
+                'paystack_pub_key': settings.PAYSTACK_PUBLIC_KEY,
+            })
     else:
         checkout_form = CheckoutForm()
+    
     context = {
         'cart': cart,
         'checkout_form': checkout_form,
     }
+    
     return render(request, 'frontend/checkout.html', context)

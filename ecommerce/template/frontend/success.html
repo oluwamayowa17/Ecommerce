@@ -1,0 +1,66 @@
+{% extends 'frontend/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="contact-from-section mt-150 mb-150">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 mb-5 mb-lg-0">
+				<div class="form-title">
+					<h2 class="text-success">Transaction SUCCESSFUL</h2>
+					<p>Dear {{request.user.user_name}}</p>
+					<p>Thank you for purchasing our delicious meals.</p>
+					<p>Our rider has been notified. Enjoy your meal.</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, ratione! Laboriosam est, assumenda. Perferendis, quo alias quaerat aliquid. Corporis ipsum minus voluptate? Dolore, esse natus!</p>
+				</div>
+
+				<div class="hero-btns">
+					<a href="{% url 'shopapp:products' %}" onclick="()=>{{cart.clear}}" class="boxed-btn">Continue Your Experience</a>
+				</div>
+					
+			</div>
+			<div class="col-lg-4">
+				<div class="order-details-wrap">
+					<table class="order-details">
+						<thead>
+							<tr>
+								<th>Your order Details</th>
+								<th>Price</th>
+							</tr>
+						</thead>
+						<tbody class="order-details-body">
+							<tr>
+								<td>Product</td>
+								<td>Total</td>
+							</tr>
+							{% for item in cart %}
+							<tr>
+								<td>{{item.product}}</td>
+								<td>&#8358;{{item.total_price}}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+						<tbody class="checkout-details">
+							<tr>
+								<td><strong>Subtotal</strong> </td>
+								<td>&#8358;{{cart.get_total_price}}</td>
+							</tr>
+							<tr>
+								<td><strong>Shipping</strong></td>
+								<td>&#8358;45</td>
+							</tr>
+							<tr>
+								<td><strong>Total</strong></td>
+								<td>&#8358;{{cart.final_price}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content%}

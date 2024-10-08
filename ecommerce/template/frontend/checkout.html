@@ -41,7 +41,7 @@
 						<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 						  <div class="card-body">
 							<div class="billing-address-form">
-								<form action="" method="post" onsubmit="payWithPaystack()">
+								<form id="checkoutForm" action="" method="post">
 									{% csrf_token %}
 									<p>{{checkout_form.phone_number}}</p>
 									<p>{{checkout_form.post_code}}</p>
@@ -49,7 +49,7 @@
 									<p>{{checkout_form.state}}</p>
 									<p>{{checkout_form.address}}</p>
 									<p>{{checkout_form.request}}</p>
-									<input type="submit" href="#" class="boxed-btn" value="Place Order"/>
+									<input type="submit" class="boxed-btn" value="Place Order"/>
 								</form>
 							</div>
 						  </div>
@@ -119,34 +119,45 @@
 	</div>
 </div>
 <!-- end check out section -->
-
-
-
+{% if payment %}
 <script>
+	window.onload = function() {
+        payWithPaystack();
+    }
+
+	const checkoutForm = document.querySelector('#checkoutForm')
+	checkoutForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        payWithPaystack();
+    });
 	function payWithPaystack() {
 		let currency = "NGN";
 		let plan = "";
-		let ref = "";
-		let amount = "";
+		let ref = "{{payment.ref}}";
+		let amount = "{{payment.amount}}";
 		let obj = {
-			key: "",
-			email: "",
-			amount: "",
+			key: "{{ paystack_pub_key }}",
+			email: "{{request.user.email }}",
+			amount: "{{payment.amount_value}}",
 			ref: ref,
 			callback: function (response) {
-				window.location.href = "";
+				window.location.href = "{% url 'payment:verify_payment' ref %}";
 			},
+			onClose: function() {
+            alert('Payment popup closed');
+        }
 		};
 		if (Boolean(currency)) {
 			obj.currency = currency.toUpperCase();
 		}
 		if (Boolean(plan)) {
-			obj.plan - plan;
-		}
+        obj.plan = plan;  
+    	}
 
 		var handler = PaystackPop.setup(obj);
 		handler.openIframe();
 	}
 </script>
+{% endif %}
 
 {% endblock content%}

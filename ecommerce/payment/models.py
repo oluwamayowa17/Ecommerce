@@ -32,7 +32,7 @@ class Order(models.Model):
     
 class Payment(models.Model):
     user = models.ForeignKey(UserBase, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True)
     amount = models.PositiveIntegerField()
     ref = models.CharField(max_length=200)
     verified = models.BooleanField(default=False)
